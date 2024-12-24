@@ -13,6 +13,7 @@ import { login, register as signup } from "@/action/auth";
 
 import { Card } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
+import { comingSoonAlert } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CircleCheck, Eye, EyeOff, Loader2 } from "lucide-react";
 import { z } from "zod";
@@ -26,6 +27,8 @@ import {
 } from "../ui/form";
 import { Input } from "../ui/input";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
+import { Separator } from "../ui/separator";
+import { TextSeparator } from "../ui/text-separetor";
 
 export const RegisterSchema = z
   .object({
@@ -314,20 +317,26 @@ export function AuthForm({ isLogin = true }) {
               {isLogin ? "Đăng nhập" : "Đăng ký"}
               {loading && <Loader2 className="ml-2 animate-spin" size={16} />}
             </Button>
-            {/* {isLogin ? (
-            <Button variant="outline" className="w-full" type="button">
-              <Image
-                src="/image/logo-google.webp"
-                className="mr-1"
-                width={"24"}
-                height={"24"}
-                alt="google logo"
-              />{" "}
-              Login with Google
-            </Button>
-          ) : (
-            ""
-          )} */}
+            {isLogin && (
+              <>
+                <TextSeparator text="or continue with" />
+                <Button
+                  variant="outline"
+                  className="w-full bg-white hover:bg-gray-300 hover:text-primary"
+                  type="button"
+                  onClick={() => comingSoonAlert()}
+                >
+                  <Image
+                    src="/image/logo-google.webp"
+                    className="mr-1"
+                    width={"24"}
+                    height={"24"}
+                    alt="google logo"
+                  />
+                  Login with Google
+                </Button>
+              </>
+            )}
           </div>
           <div className="mt-4 text-center text-sm">
             {isLogin ? (
