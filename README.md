@@ -2,7 +2,7 @@
 
 ## 1. Project Overview
 
-This is Social Network Web Application project.
+For full information please go to parent project: https://github.com/daklod2k3/social-network.git
 
 ## To do:
 - [x] Login/Logout/Register
@@ -20,31 +20,4 @@ This is Social Network Web Application project.
 - [ ] Notification
 - [ ] ...
 
----
-
-## 2. Tech Stack Breakdown
-
-### **1. Front-End (Client Side)**
-- **Framework/Library:** React, NextJS
-- **Styling:** Tailwind CSS
-
-### **2. Back-End (Server Side)**
-**Current using NestJS but I'm moving to Golang**
-- **Framework:** NestJS
-- **Language:** JavaScript/TypeScript
-- **Authentication:** Gotrue (open-source Golang project auth based on JWT)
-- **API Design:** REST
-
-### **3. Database**
-- **Primary Database:** PostgreSQL (Relational Database)
-
-### **4. Infrastructure & Deployment**
-- **Cloud Provider:** Vercel
-- **Containerization:** Docker
-- **CI/CD:** GitHub Actions
-
-### **5. Development Tools**
-- **Version Control:** Git (GitHub)
-- **IDE:** Webstorm, Vscode
----
 
