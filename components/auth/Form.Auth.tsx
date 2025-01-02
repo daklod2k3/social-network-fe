@@ -27,7 +27,6 @@ import {
 } from "../ui/form";
 import { Input } from "../ui/input";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
-import { Separator } from "../ui/separator";
 import { TextSeparator } from "../ui/text-separetor";
 
 export const RegisterSchema = z

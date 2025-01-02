@@ -61,3 +61,19 @@ export async function register(form: {
     };
   }
 }
+
+export async function getSession(cookie?: string) {
+  if (!cookie) return null;
+  try {
+    const res = await fetch(api.baseUrl + "/auth/session", {
+      headers: {
+        cookie,
+      },
+    });
+    const data = await res.json();
+    return data;
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
+}
