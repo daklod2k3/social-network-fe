@@ -34,7 +34,6 @@ export async function login(form: { email: string; password: string }) {
 export async function register(form: {
   email: string;
   password: string;
-  name: string;
 }) {
   try {
     const res = await fetch(api.baseUrl + "/auth/register", {

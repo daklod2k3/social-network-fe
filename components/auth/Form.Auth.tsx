@@ -7,7 +7,7 @@ import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
 
-import { useState } from "react";
+import { HTMLInputTypeAttribute, useMemo, useState } from "react";
 
 import { login, register as signup } from "@/action/auth";
 
@@ -22,12 +22,10 @@ import {
   FormControl,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "../ui/form";
 import { Input } from "../ui/input";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
-import { Separator } from "../ui/separator";
 import { TextSeparator } from "../ui/text-separetor";
 
 export const RegisterSchema = z
@@ -38,9 +36,9 @@ export const RegisterSchema = z
     email: z.string().email({
       message: "Email không hợp lệ",
     }),
-    name: z.string().min(1, {
-      message: "Tên không được trống",
-    }),
+    // name: z.string().min(1, {
+    //   message: "Tên không được trống",
+    // }),
     repassword: z.string(),
   })
   .refine((data) => data.password == data.repassword, {
@@ -57,41 +55,17 @@ export const LoginSchema = z.object({
   }),
 });
 
-// const FormField = function ({
-//   label,
-//   type,
-//   placeholder,
-//   name,
-//   error,
-//   register,
-//   valueAsNumber,
-//   showPassIcon,
-// }: any) {
-//   return (
-//     <>
-//       <Label>{label}</Label>
-//       <div className="flex flex-row-reverse items-center">
-//         <Input
-//           className="text-black"
-//           type={type}
-//           placeholder={placeholder}
-//           {...register(name, {
-//             valueAsNumber,
-//           })}
-//         />
-//         {showPassIcon}
-//       </div>
-//       {error && <span className="text-xs text-[#DD2C00]">{error.message}</span>}
-//     </>
-//   );
-// };
+interface FormItem {
+  name: keyof z.infer<typeof RegisterSchema>;
+  label: string;
+  type: HTMLInputTypeAttribute;
+}
 
 export function AuthForm({ isLogin = true }) {
   const form = useForm<z.infer<typeof RegisterSchema>>({
     resolver: zodResolver(isLogin ? LoginSchema : RegisterSchema),
     mode: "all",
     defaultValues: {
-      name: "",
       email: "",
       password: "",
       repassword: "",
@@ -102,6 +76,34 @@ export function AuthForm({ isLogin = true }) {
 
   // password show/hide icon
   const [isShow, setIsShow] = useState(false);
+
+  const field: FormItem[] = useMemo<FormItem[]>(() => {
+    const d = isLogin
+      ? []
+      : [
+          {
+            name: "repassword",
+            label: "Nhập lại mật khẩu",
+            type: "password",
+          },
+        ];
+
+    return [
+      {
+        name: "email",
+        label: "Email",
+        type: "email",
+      },
+      {
+        name: "password",
+        label: "Mật khẩu",
+        type: isShow ? "text" : "password",
+      },
+      ...d,
+    ] as FormItem[];
+  }, [isShow, isLogin]);
+
+  console.log(field);
 
   const { toast } = useToast();
 
@@ -181,138 +183,32 @@ export function AuthForm({ isLogin = true }) {
             </p>
           </div>
           <div className="grid gap-4">
-            {isLogin ? (
-              <>
-                <div className="grid gap-2">
-                  <FormField
-                    control={form.control}
-                    name="email"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Email</FormLabel>
-                        <FormControl>
-                          <Input {...field} placeholder="Email" />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-                <div className="grid gap-2">
-                  <FormField
-                    control={form.control}
-                    name="password"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Mật khẩu</FormLabel>
-                        <FormControl>
-                          <div className="flex flex-row-reverse items-center">
-                            <Input
-                              {...field}
-                              type={isShow ? "text" : "password"}
-                              placeholder="Mật khẩu"
-                            />
-                            {showPassIcon}
-                          </div>
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <Link
-                    href="/forgot-password"
-                    className="ml-auto inline-block text-sm underline"
-                  >
-                    Quên mật khẩu?
-                  </Link>
-                </div>
-              </>
-            ) : (
-              <>
-                <div className="grid gap-2">
-                  {/* <Label htmlFor="email">Họ Tên</Label>
-                  <Input
-                    type="text"
-                    required
-                    placeholder="Nhập họ tên của bạn"
-                    {...register("name")}
-                  /> */}
-                  <FormField
-                    control={form.control}
-                    name="name"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Tên hiển thị</FormLabel>
-                        <FormControl>
+            {field.map((item, idx) => (
+              <div key={idx} className="grid gap-2">
+                <FormField
+                  control={form.control}
+                  name={item.name}
+                  render={({ field }) => (
+                    <FormItem>
+                      {/* <FormLabel>{item.label}</FormLabel> */}
+                      <FormControl autoFocus>
+                        <div className="flex flex-row-reverse items-center">
                           <Input
                             {...field}
-                            type="text"
-                            placeholder="Tên hiển thị"
+                            autoFocus={idx == 0}
+                            className="h-10"
+                            type={item.type}
+                            placeholder={item.label}
                           />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-                <div className="grid gap-2">
-                  <FormField
-                    control={form.control}
-                    name="email"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Email</FormLabel>
-                        <FormControl>
-                          <Input {...field} type="text" placeholder="Email" />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-                <div className="grid gap-2">
-                  <FormField
-                    control={form.control}
-                    name="password"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Mật khẩu</FormLabel>
-                        <FormControl>
-                          <div className="flex flex-row-reverse items-center">
-                            <Input
-                              {...field}
-                              type={isShow ? "text" : "password"}
-                              placeholder="Mật khẩu"
-                            />
-                            {showPassIcon}
-                          </div>
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-                <div className="grid gap-2">
-                  <FormField
-                    control={form.control}
-                    name="repassword"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Nhập lại mật khẩu</FormLabel>
-                        <FormControl>
-                          <Input
-                            {...field}
-                            type="password"
-                            placeholder="Nhập lại mật khẩu"
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-              </>
-            )}
+                          {item.name == "password" && showPassIcon}
+                        </div>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+            ))}
             <Button type="submit" className="mt-2 w-full" disabled={loading}>
               {isLogin ? "Đăng nhập" : "Đăng ký"}
               {loading && <Loader2 className="ml-2 animate-spin" size={16} />}
