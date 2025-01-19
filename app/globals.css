@@ -39,6 +39,7 @@ body {
     --post-foreground: 212 16% 46%;
 
     --radius: 0.5rem;
+
   }
   .dark {
     --background: 0 0% 3.9%;
