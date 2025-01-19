@@ -13,7 +13,6 @@ import { login, register as signup } from "@/action/auth";
 
 import { Card } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
-import { comingSoonAlert } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CircleCheck, Eye, EyeOff, Loader2 } from "lucide-react";
 import { z } from "zod";
@@ -103,7 +102,7 @@ export function AuthForm({ isLogin = true }) {
     ] as FormItem[];
   }, [isShow, isLogin]);
 
-  console.log(field);
+  // console.log(field);
 
   const { toast } = useToast();
 
@@ -220,7 +219,11 @@ export function AuthForm({ isLogin = true }) {
                   variant="outline"
                   className="w-full bg-white hover:bg-gray-300 hover:text-primary"
                   type="button"
-                  onClick={() => comingSoonAlert()}
+                  onClick={() => {
+                    toast({
+                      description: "3rd login unavailable now",
+                    });
+                  }}
                 >
                   <Image
                     src="/image/logo-google.webp"

@@ -1,40 +1,50 @@
 "use server";
 
-import { Api } from "./api";
+import { LoginSchema } from "@/components/auth/Form.Auth";
+import { CreateProfileSchema } from "@/components/create-profile.form";
+import { ReadonlyRequestCookies } from "next/dist/server/web/spec-extension/adapters/request-cookies";
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
+import { z } from "zod";
+import { ApiAuth, ApiRoutes } from "./api";
 
-const api = await Api();
+// const LogName = "create profile";
 
-export async function login(form: { email: string; password: string }) {
+export async function login(form: z.infer<typeof LoginSchema>) {
+  const api = new ApiAuth(await cookies(), ApiRoutes.Login);
+  let data;
   try {
-    const res = await fetch(api.baseUrl + "/auth/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(form),
-    });
-    const data = await res.json();
+    const res = await api.post(form);
+    data = await res.json();
     switch (data.error_code) {
       case "invalid_credentials":
         return {
           error: "Tài khoản hoặc mật khẩu không đúng",
         };
     }
-    return {
-      error: "Unknown error",
-    };
   } catch (error) {
     console.log(error);
     return {
       error: "Unknown error",
     };
   }
+  const cookie = await cookies();
+  cookie.set("access_token", data.access_token);
+  cookie.set("refresh_token", data.refresh_token);
+  if (data.access_token) {
+    redirect("/");
+  }
+  return {
+    error: "Unknown error",
+  };
 }
 
 export async function register(form: {
   email: string;
   password: string;
 }) {
+  const api = new ApiAuth(await cookies(), ApiRoutes.Profile);
+
   try {
     const res = await fetch(api.baseUrl + "/auth/register", {
       method: "POST",
@@ -50,13 +60,87 @@ export async function register(form: {
           error: "Người dùng đã tồn tại",
         };
     }
-    return {
-      error: "Unknown error",
-    };
+
+    if (!data.access_token) {
+      return {
+        error: "Unknown error",
+      };
+    }
+
+    const cookie = await cookies();
+    cookie.set("access_token", data.access_token);
+    cookie.set("refresh_token", data.refresh_token);
   } catch (error) {
     console.log(error);
     return {
       error: "Unknown error",
     };
   }
+  redirect("/create-profile");
+}
+
+export async function createProfile(form: z.infer<typeof CreateProfileSchema>) {
+  try {
+    const req = await (await getAuthApi()).post(form);
+    const data = await req.json();
+    if (!data.user_id) {
+      return data;
+    }
+  } catch (e) {
+    console.error(e);
+
+    return {
+      error: "Server error",
+    };
+  }
+  redirect("/");
+}
+
+export async function getSession(cookies?: ReadonlyRequestCookies) {
+  let apiAuth;
+  if (cookies) {
+    apiAuth = new ApiAuth(cookies, ApiRoutes.Session);
+  } else {
+    apiAuth = await getAuthApi(ApiRoutes.Session);
+  }
+  try {
+    const req = await apiAuth.get({});
+    // const req = await fetch((await getAuthApi()).baseUrl + ApiRoutes.Session, {
+    //   credentials: "include",
+    // });
+    // console.log(req);
+    if (req.status == 401) {
+      return {
+        "error": "Unauthorized",
+      };
+    }
+
+    const data = await req.json();
+    // if (data)
+
+    return data;
+  } catch (e) {
+    console.error(e);
+  }
+  return {
+    error: "Server error",
+  };
+}
+
+export async function getProfile() {
+  try {
+    const req = await (await getAuthApi(ApiRoutes.Profile)).get({});
+    console.log(req);
+    const data = await req.json();
+    if (!data.user_id) {
+      return data;
+    }
+  } catch (e) {
+    console.error(e);
+    redirect("/login");
+  }
+}
+
+async function getAuthApi(route: ApiRoutes = ApiRoutes.Profile) {
+  return new ApiAuth(await cookies(), route);
 }
