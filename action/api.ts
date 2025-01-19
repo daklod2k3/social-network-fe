@@ -77,7 +77,7 @@ export class ApiAuth {
     return res;
   }
 
-  async patch(id, data: any) {
+  async patch(id: any, data: any) {
     const res = fetch(this.route + `/${id}`, {
       credentials: "include",
       headers: {

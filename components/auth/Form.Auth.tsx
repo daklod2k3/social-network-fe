@@ -141,7 +141,7 @@ export function AuthForm({ isLogin = true }) {
     }
 
     toast({
-      title: "Login failed",
+      title: "Đăng nhập thất bại",
       description: result?.error || "An error occurred",
       variant: "destructive",
     });

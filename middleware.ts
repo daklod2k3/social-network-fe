@@ -26,7 +26,7 @@ export async function middleware(request: NextRequest) {
   ) {
     // no user, potentially respond by redirecting the user to the login page
     const session = await getSession(await cookies());
-    console.log(session);
+    // console.log(session);
 
     if (!session) {
       url.pathname = "/login";

@@ -16,8 +16,10 @@ export async function login(form: z.infer<typeof LoginSchema>) {
   try {
     const res = await api.post(form);
     data = await res.json();
-    switch (data.error_code) {
-      case "invalid_credentials":
+    console.log(data);
+
+    switch (data?.message) {
+      case "Invalid login credentials":
         return {
           error: "Tài khoản hoặc mật khẩu không đúng",
         };
