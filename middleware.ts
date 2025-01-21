@@ -28,7 +28,12 @@ export async function middleware(request: NextRequest) {
     const session = await getSession(await cookies());
     // console.log(session);
 
-    if (!session) {
+    if (!session || session.error) {
+      url.pathname = "/login";
+      return NextResponse.redirect(url);
+    }
+
+    if (!("user_id" in session)) {
       url.pathname = "/login";
       return NextResponse.redirect(url);
     }

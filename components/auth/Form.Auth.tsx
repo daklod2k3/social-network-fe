@@ -214,14 +214,14 @@ export function AuthForm({ isLogin = true }) {
             </Button>
             {isLogin && (
               <>
-                <TextSeparator text="or continue with" />
+                <TextSeparator text="hoặc tiếp tục với" />
                 <Button
                   variant="outline"
                   className="w-full bg-white hover:bg-gray-300 hover:text-primary"
                   type="button"
                   onClick={() => {
                     toast({
-                      description: "3rd login unavailable now",
+                      description: "Tính năng đang phát triển",
                     });
                   }}
                 >
@@ -232,7 +232,7 @@ export function AuthForm({ isLogin = true }) {
                     height={"24"}
                     alt="google logo"
                   />
-                  Login with Google
+                  Đăng nhập với Google
                 </Button>
               </>
             )}

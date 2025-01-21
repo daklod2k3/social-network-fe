@@ -1,7 +1,9 @@
 "use server";
 
-import { LoginSchema } from "@/components/auth/Form.Auth";
+import { LoginSchema } from "@/components/auth/form.auth";
 import { CreateProfileSchema } from "@/components/create-profile.form";
+import { AuthResponse } from "@/entity/auth";
+import { ErrorResponse } from "@/entity/response";
 import { ReadonlyRequestCookies } from "next/dist/server/web/spec-extension/adapters/request-cookies";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
@@ -18,8 +20,8 @@ export async function login(form: z.infer<typeof LoginSchema>) {
     data = await res.json();
     console.log(data);
 
-    switch (data?.message) {
-      case "Invalid login credentials":
+    switch (data?.error) {
+      case "invalid_credentials":
         return {
           error: "Tài khoản hoặc mật khẩu không đúng",
         };
@@ -56,7 +58,9 @@ export async function register(form: {
       body: JSON.stringify(form),
     });
     const data = await res.json();
-    switch (data.error_code) {
+    console.log(data);
+
+    switch (data.error) {
       case "user_already_exists":
         return {
           error: "Người dùng đã tồn tại",
@@ -98,7 +102,9 @@ export async function createProfile(form: z.infer<typeof CreateProfileSchema>) {
   redirect("/");
 }
 
-export async function getSession(cookies?: ReadonlyRequestCookies) {
+export async function getSession(
+  cookies?: ReadonlyRequestCookies,
+): Promise<ErrorResponse | AuthResponse> {
   let apiAuth;
   if (cookies) {
     apiAuth = new ApiAuth(cookies, ApiRoutes.Session);
@@ -120,7 +126,7 @@ export async function getSession(cookies?: ReadonlyRequestCookies) {
     const data = await req.json();
     // if (data)
 
-    return data;
+    return data as AuthResponse;
   } catch (e) {
     console.error(e);
   }
@@ -145,4 +151,7 @@ export async function getProfile() {
 
 async function getAuthApi(route: ApiRoutes = ApiRoutes.Profile) {
   return new ApiAuth(await cookies(), route);
+}
+
+export async function logout() {
 }
