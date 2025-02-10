@@ -5,8 +5,9 @@ import MessageBox from "@/components/message/message.box";
 import MessageFind from "@/components/message/message.find";
 import LeftNavigation from "@/components/nav/left.nav";
 import TopNavigation from "@/components/nav/top.nav";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { redirect } from "next/navigation";
+
 // import NotificationListen from "@/components/Notification.Listen";
 import React from "react";
 
@@ -23,8 +24,6 @@ export default async function Layout({
 
   const user = session.user;
 
-  // console.log(user);
-
   if (user)
     return (
       <UserProvider value={user}>
@@ -33,28 +32,12 @@ export default async function Layout({
         {/* <TopNavigationCollapse className="z-50 top-0 fixed flex md:hidden" /> */}
 
         <div className="mt-20 flex min-h-screen w-full items-start gap-4 px-5">
-          <LeftNavigation
-            className={
-              "h-[calc(100vh - 5rem)] sticky top-20 z-40 ml-5 mr-16 hidden w-1/6"
-            }
-          />
-          <main className="flex w-2/5 basis-auto flex-col items-center justify-center pb-5 *:w-full max-md:w-full">
-            <ScrollArea className="">{children}</ScrollArea>
-          </main>
-          <div className="h-[calc(100vh - 5rem)] sticky top-20 z-40 flex grow flex-col gap-4 max-md:hidden">
-            <MessageFind className="w-full max-w-80" />
-            {/* <LeftSide className="z-50 w-1/4 left-24 fixed top-24"/> */}
-            <div className="fixed bottom-0 right-8 flex w-full flex-row justify-end gap-3">
-              {/* <MessageBox
-                className="w-full max-w-80"
-                author={await getPeopleInfo(4)}
-              /> */}
-              {/* <MessageBox
-                className="w-full max-w-80"
-                author={await getPeopleInfo(4)}
-              /> */}
-            </div>
-          </div>
+          <SidebarProvider>
+            <main>
+              <SidebarTrigger />
+              {children}
+            </main>
+          </SidebarProvider>
         </div>
         {/* <NotificationListen /> */}
       </UserProvider>

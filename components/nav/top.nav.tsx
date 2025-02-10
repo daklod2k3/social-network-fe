@@ -207,7 +207,7 @@ export default function TopNavigation({
               name={user?.display_name}
               src={user?.avatar_path}
             >
-              <span className="flex text-xs text-[#2bc60c]/60">Sinh viên</span>
+              {/* <span className="flex text-xs text-[#2bc60c]/60">Sinh viên</span> */}
             </AvatarWithName>
           </DropdownMenuTrigger>
           <DropdownMenuContent>

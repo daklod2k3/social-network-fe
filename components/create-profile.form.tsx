@@ -94,7 +94,7 @@ export default function CreateProfileForm() {
             <p className=" break-words ">
               <span>
                 Chào mừng đến với{" "}
-                <span className="font-bold">FRIEND CONNECT</span>
+                <span className="font-bold">FAST CONNECT</span>
               </span>
               <br />
               <span>hãy cho mọi người biết thêm thông tin về bạn</span>

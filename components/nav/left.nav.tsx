@@ -39,23 +39,25 @@ export default function LeftNavigation({ className }: Props) {
         <CardContent className="flex flex-col items-center">
           <Avatar className="m-3 mt-5 h-24 w-24 rounded-full border border-primary bg-white">
             <AvatarImage
-              src={user?.avatar_path ?? "/image/avatar.avif"}
+              src={user?.avatar_path || "/image/avatar/avatar1.avif"}
               className="h-full"
             />
           </Avatar>
           <div className="flex flex-col items-center">
             <span className="font-bold">{user.display_name}</span>
-            <span className="text-[#2bc60c]">Thành viên</span>
-            <span className="text-xs text-muted-foreground">1k theo dõi</span>
+            {/* <span className="text-[#2bc60c]">Thành viên</span> */}
+            <span className="text-xs text-muted-foreground">
+              0 lượt theo dõi
+            </span>
           </div>
         </CardContent>
       </Card>
 
       <div className="mt-12 flex h-full w-full flex-col gap-2">
         <LinkButton href="/" isActive={pathname == "/"} name={"Trang chủ"}>
-          <img src="/icon/home.png" className="h-7" />
+          <img src="/icon/home.png" className="h-5" />
         </LinkButton>
-        <LinkButton
+        {/* <LinkButton
           href="/tinder"
           isActive={pathname == "/tinder"}
           name={"Hẹn hò"}
@@ -69,9 +71,13 @@ export default function LeftNavigation({ className }: Props) {
           name={"Thời khoá biểu"}
         >
           <CalendarDays size={iconSize} />
-        </LinkButton>
+        </LinkButton> */}
 
-        <LinkButton className={"justify-self-end"} name={"Cài đặt"}>
+        <LinkButton
+          href="/setting"
+          className={"justify-self-end"}
+          name={"Cài đặt"}
+        >
           <Settings size={iconSize} />
         </LinkButton>
       </div>

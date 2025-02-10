@@ -23,11 +23,8 @@ export default function MessageFind({
           <CardDescription>Bắt đầu cuộc trò chuyện mới</CardDescription>
         </CardHeader>
         <CardContent className="flex flex-col">
-          <Input
-            className="mb-3 h-8 border-none"
-            placeholder="Tìm kiếm bạn bè"
-          />
-          <Button className="h-fit justify-start bg-transparent py-3 text-start text-primary hover:bg-background">
+          <Input className="mb-3 h-8 " placeholder="Tìm kiếm bạn bè" />
+          <Button className="h-fit justify-start shadow-none bg-transparent py-3 text-start text-primary hover:bg-background">
             <AvatarWithName
               active={false}
               src={"/image/duytung-avt.jpg"}
@@ -36,7 +33,7 @@ export default function MessageFind({
               3 phút trước
             </AvatarWithName>
           </Button>
-          <Button className="h-fit justify-start bg-transparent py-3 text-start text-primary hover:bg-background">
+          <Button className="h-fit justify-start  shadow-none bg-transparent py-3 text-start text-primary hover:bg-background">
             <AvatarWithName
               active={true}
               src={"/image/trungtin-avt.jpg"}
@@ -47,7 +44,7 @@ export default function MessageFind({
               </div>
             </AvatarWithName>
           </Button>
-          <Button className="h-fit justify-start bg-transparent py-3 text-start text-primary hover:bg-background">
+          <Button className="h-fit justify-start  shadow-none bg-transparent py-3 text-start text-primary hover:bg-background">
             <AvatarWithName
               active={true}
               src={"/image/toanvu-avt.jpg"}

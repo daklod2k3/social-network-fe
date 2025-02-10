@@ -37,7 +37,7 @@ export default function AvatarWithName({
           "h-" + size
         )}
       >
-        <AvatarImage src={src ?? "/image/avatar.avif"} />
+        <AvatarImage src={src ?? "/image/avatar/avatar1.avif"} />
       </Avatar>
       <div className={cn("flex flex-col text-muted-foreground")}>
         <p

@@ -29,7 +29,7 @@ export async function login(form: z.infer<typeof LoginSchema>) {
   } catch (error) {
     console.log(error);
     return {
-      error: "Unknown error",
+      error: "Có gì đó không đúng :'(, vui lòng thử lại sau",
     };
   }
   const cookie = await cookies();
@@ -39,7 +39,7 @@ export async function login(form: z.infer<typeof LoginSchema>) {
     redirect("/");
   }
   return {
-    error: "Unknown error",
+    error: "Có gì đó không đúng :'(, vui lòng thử lại sau",
   };
 }
 
@@ -47,16 +47,10 @@ export async function register(form: {
   email: string;
   password: string;
 }) {
-  const api = new ApiAuth(await cookies(), ApiRoutes.Profile);
+  const api = new ApiAuth(await cookies(), ApiRoutes.Register);
 
   try {
-    const res = await fetch(api.baseUrl + "/auth/register", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(form),
-    });
+    const res = await api.post(form);
     const data = await res.json();
     console.log(data);
 
@@ -69,7 +63,7 @@ export async function register(form: {
 
     if (!data.access_token) {
       return {
-        error: "Unknown error",
+        error: "Có gì đó không đúng :'(, vui lòng thử lại sau",
       };
     }
 
@@ -79,7 +73,7 @@ export async function register(form: {
   } catch (error) {
     console.log(error);
     return {
-      error: "Unknown error",
+      error: "Có gì đó không đúng :'(, vui lòng thử lại sau",
     };
   }
   redirect("/create-profile");

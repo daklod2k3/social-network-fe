@@ -3,6 +3,11 @@ import CreateProfileForm from "@/components/create-profile.form";
 import { redirect } from "next/navigation";
 import React from "react";
 
+export const metadata = {
+  title: "Tạo thông tin cá nhân",
+  description: "Tạo thông tin cá nhân để bắt đầu sử dụng dịch vụ",
+};
+
 export default async function Page() {
   const user = await getSession();
   if (user.data) {

@@ -14,17 +14,46 @@ export type Follow = {
   followers: string[];
 };
 
+export enum shareType {
+  PUBLIC = "public",
+  FRIEND = "friend",
+  PRIVATE = "private",
+}
+
 // Post represents the Posts collection
 export type Post = {
   id: string;
-  createdBy: string;
+  created_by: string;
   content: string;
-  createdAt: Date;
-  totalLike: number;
-  totalComments: number;
-  totalShare: number;
+  share_type: shareType;
+  created_at: Date;
+  total_like: number;
+  total_comments: number;
+  total_shares: number;
   videos: MediaResource[];
   images: MediaResource[];
+  author: {
+    display_name: string;
+    avatar_path: string;
+  };
+};
+
+export type Feed = {
+  id: string;
+  userId: string;
+  posts: Post[];
+};
+
+export type Comment = {
+  id: string;
+  created_by: string;
+  content: string;
+  parent_id: string;
+  created_at: Date;
+  total_like: number;
+  total_comments: number;
+  videos: MediaResource;
+  images: MediaResource;
   author: {
     display_name: string;
     avatar_path: string;
@@ -35,17 +64,21 @@ export type Post = {
 export type Like = {
   id: string;
   type: string;
-  createdBy: string;
-  parentId: string;
+  created_by: string;
+  parent_id: string;
 };
 
 // Interaction represents the Interactions collection
 export type Interaction = {
   id: string;
-  parentId: string;
-  comments: number;
-  likes: number;
-  shares: number;
+  type: string;
+  created_by: string;
+  parent_id: string;
+  created_at: Date;
+  updated_at: Date;
+  content: string;
+  total_like: number;
+  total_comments: number;
 };
 
 // CommentPost represents the Comments : Posts collection

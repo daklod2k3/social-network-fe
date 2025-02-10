@@ -1,5 +1,6 @@
 "use server";
 
+import FeedList from "@/components/news_feed/feed-list";
 import NewPost from "@/components/post/new.post";
 import React from "react";
 
@@ -9,6 +10,7 @@ export default async function Home() {
   return (
     <div className="flex flex-col items-start justify-start gap-5">
       <NewPost />
+      <FeedList />
 
       {/* {userPosts?.map(async (data) => {
         const userLike = await getLike(data.post.post_id);

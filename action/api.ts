@@ -12,6 +12,8 @@ export const enum ApiRoutes {
   Register = "/auth/register",
   Profile = "/profile",
   Session = "/auth/session",
+  Post = "/post",
+  Feed = "/feed",
 }
 
 export interface GetProps {
@@ -35,11 +37,12 @@ export class ApiAuth {
     const params = new URLSearchParams(search);
     if (includes) params.append("includes", includes);
     if (search || params.size > 0) path += `?${params.toString()}`;
-    console.log(path);
+    // console.log(path);
     const res = fetch(path, {
       credentials: "include",
       headers: {
         Authorization: `Bearer ${await this.token}`,
+        apiKey: process.env.API_KEY ?? "",
       },
     });
     // if ((await res).status === 403)
@@ -52,6 +55,7 @@ export class ApiAuth {
         Authorization: `Bearer ${await this.token}`,
         Accept: "application/json",
         "Content-Type": "application/json",
+        apiKey: process.env.API_KEY ?? "",
       },
       method: "POST",
       body: JSON.stringify(data),
@@ -69,6 +73,7 @@ export class ApiAuth {
         Authorization: `Bearer ${await this.token}`,
         Accept: "application/json",
         "Content-Type": "application/json",
+        apiKey: process.env.API_KEY ?? "",
       },
       method: "PUT",
       body: JSON.stringify(data),
@@ -84,6 +89,7 @@ export class ApiAuth {
         Authorization: `Bearer ${await this.token}`,
         Accept: "application/json",
         "Content-Type": "application/json-patch+json",
+        apiKey: process.env.API_KEY ?? "",
       },
       method: "PATCH",
       body: JSON.stringify(data),
@@ -95,9 +101,9 @@ export class ApiAuth {
   async delete(id: any) {
     const res = fetch(this.route + `/${id}`, {
       credentials: "include",
-
       headers: {
         Authorization: `Bearer ${await this.token}`,
+        apiKey: process.env.API_KEY ?? "",
       },
       method: "DELETE",
     });

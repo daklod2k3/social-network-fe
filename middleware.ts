@@ -4,6 +4,9 @@ import { getSession } from "./action/auth";
 
 export async function middleware(request: NextRequest) {
   const url = request.nextUrl.clone();
+  // if (url.pathname.startsWith("/api")) {
+  //   return NextResponse.next();
+  // }
 
   if (
     (request.nextUrl.pathname.startsWith("/login") ||
@@ -57,6 +60,6 @@ export const config = {
      * - favicon.ico (favicon file)
      * Feel free to modify this pattern to include more paths.
      */
-    "/((?!_next/static|_next/image|favicon.ico|image|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
+    "/((?!_next/static|_next/image|favicon.ico|image|.*\\.(?:svg|png|jpg|jpeg|gif|webp|avif)$).*)",
   ],
 };

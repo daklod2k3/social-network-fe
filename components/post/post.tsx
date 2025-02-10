@@ -18,14 +18,14 @@ import {
   DropdownMenuContent,
 } from "@/components/ui/dropdown-menu";
 import { Separator } from "@/components/ui/separator";
-import { CommentPost } from "@/entity/document";
+import { Comment, CommentPost, Like, Post, Profile } from "@/entity/document";
 import { CardHoverStyle, FormatTime } from "@/helper/utils";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 import { DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
 import { Ellipsis } from "lucide-react";
 import Link from "next/link";
-import { Suspense, useContext, useState } from "react";
+import { HTMLAttributes, Suspense, useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Input } from "../ui/input";
 import CommentList from "./comment.list";
@@ -33,7 +33,22 @@ import Reactions from "./reactions";
 
 const footerIconSize = 17;
 
-export default function Post({ info, like, cmts, author, imgs, className }) {
+interface Props extends HTMLAttributes<HTMLDivElement> {
+  info: Post;
+  like: Like;
+  cmts: Comment[];
+  imgs: string[];
+  author: Profile;
+}
+
+export default function PostComponent({
+  info,
+  like,
+  cmts,
+  author,
+  imgs,
+  className,
+}: Props) {
   const {
     register,
     handleSubmit,
@@ -57,10 +72,14 @@ export default function Post({ info, like, cmts, author, imgs, className }) {
         className={cn(className, "relative w-full bg-white", CardHoverStyle)}
       >
         <CardHeader className="flex flex-row justify-between p-5 pb-3">
-          <AvatarWithName name={author?.name} src={author?.avata_url} size={12}>
+          <AvatarWithName
+            name={author?.display_name}
+            src={author?.avatar_path}
+            size={12}
+          >
             <span className="text-muted-foreground">
               <Link
-                href={"/post/" + info.post_id}
+                href={"/post/" + info.id}
                 className="hover:underline"
                 suppressHydrationWarning={true}
               >
@@ -80,11 +99,11 @@ export default function Post({ info, like, cmts, author, imgs, className }) {
         <CardContent className="relative flex w-full flex-col gap-3 pb-3 text-post-foreground">
           <div
             className={cn(
-              info?.body?.length < 200 && !imgs.length ? "text-2xl" : "",
+              info?.content?.length < 200 && !imgs.length ? "text-2xl" : "",
               "whitespace-pre-line"
             )}
           >
-            {info?.body}
+            {info?.content}
           </div>
         </CardContent>
         {imgs ? (
@@ -182,7 +201,7 @@ export default function Post({ info, like, cmts, author, imgs, className }) {
           </button>
         </form>
         {/* <PostComments post_id={info.post_id} /> */}
-        <CommentList post_id={info?.post_id} lists={newComments} />
+        <CommentList post_id={info?.id} lists={newComments} />
       </Card>
     </PostProvider>
   );
