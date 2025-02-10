@@ -10,7 +10,7 @@ export const metadata = {
 
 export default async function Page() {
   const user = await getSession();
-  if (user.data) {
+  if ('access_token' in user) {
     redirect("/");
   }
 

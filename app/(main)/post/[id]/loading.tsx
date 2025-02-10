@@ -1,4 +1,4 @@
-import PostSkeleton from "@/components/custom/post/Post.Skeleton";
+import PostSkeleton from "@/components/post/post.skeleton";
 import React from "react";
 
 export default function loading() {

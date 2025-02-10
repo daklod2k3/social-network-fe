@@ -22,7 +22,7 @@ export default function Comment({ comment, children }: Props) {
       </AvatarWithName>
       <div className="flex flex-row gap-5 pl-12 pt-2 text-sm">
         <span className="text-muted-foreground" suppressHydrationWarning>
-          {FormatTime(info?.createdAt)}
+          {FormatTime(info?.created_at)}
         </span>
         <a>Thích</a>
         <a>Trả lời</a>

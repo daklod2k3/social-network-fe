@@ -98,7 +98,7 @@ export async function createProfile(form: z.infer<typeof CreateProfileSchema>) {
 
 export async function getSession(
   cookies?: ReadonlyRequestCookies,
-): Promise<ErrorResponse | AuthResponse> {
+): Promise<AuthResponse | ErrorResponse> {
   let apiAuth;
   if (cookies) {
     apiAuth = new ApiAuth(cookies, ApiRoutes.Session);

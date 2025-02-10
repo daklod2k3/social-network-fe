@@ -289,17 +289,17 @@ export default function NewPost() {
           {/* <NewPostDialog open={open} /> */}
         </form>
       </Card>
-      {newPost.reverse().map((data, idx) => {
+      {/* {newPost.reverse().map((data, idx) => {
         return (
           <PostComponent
             key={idx}
             info={data}
-            author={data.author}
+            // author={data.author}
             cmts={[]}
             imgs={data.images}
           />
         );
-      })}
+      })} */}
     </>
   );
 }
